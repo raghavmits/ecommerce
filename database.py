@@ -3,7 +3,7 @@ from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 from fastapi import Depends
 
 MONGO_URI = "***REMOVED***"
-DB_NAME = "user_db"
+DB_NAME = "bookstore"
 
 # Create a database connection
 client = AsyncIOMotorClient(MONGO_URI)
@@ -17,5 +17,8 @@ async def get_database() -> AsyncIOMotorDatabase:
 ### Can add a dependency chain to get the database and then the users collection
 async def get_users_collection(database: AsyncIOMotorDatabase = Depends(get_database)):
     return database.get_collection("users")
+
+async def get_products_collection(database: AsyncIOMotorDatabase = Depends(get_database)):
+    return database.get_collection("products")
 
 
