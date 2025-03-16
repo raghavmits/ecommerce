@@ -28,7 +28,7 @@ The API is built using FastAPI for performance and MongoDB for flexible data sto
 i. Clone the repository:
    ```bash
    git clone https://github.com/raghavmits/ecommerce.git
-   cd ecommAPI
+   cd <path-to-the-project>
    ```
 
 ii. Change the `.env.example` file to `.env` and update the following variables with the right credentials:

@@ -96,7 +96,7 @@ def get_user_from_db():
         from motor.motor_asyncio import AsyncIOMotorClient
         
         # Use the same connection string as your API
-        client = AsyncIOMotorClient("***REMOVED***")
+        client = AsyncIOMotorClient("mongodb+srv://<REDACTED>")
         db = client["bookstore"]
         users_collection = db["users"]
         
