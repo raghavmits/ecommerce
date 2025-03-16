@@ -27,14 +27,14 @@ The API is built using FastAPI for performance and MongoDB for flexible data sto
 
 i. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/raghavmits/ecommerce.git
    cd ecommAPI
    ```
 
-ii. Revise the `.env` file in the project root with your MongoDB credentials if you want to use a different database instead of the default one:
+ii. Change the `.env.example` file to `.env` and update the following variables with the right credentials:
    ```
    MONGO_URI=mongodb+srv://<username>:<password>@<cluster-url>/?retryWrites=true&w=majority
-   DB_NAME=bookstore
+   DB_NAME=<database-name>
    ```
 
 iii. Build and start the services:
