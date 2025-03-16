@@ -2,7 +2,6 @@
 learn_mongo/
 ecomm-env/
 tests/test-env
-.env/
 .venv/
 
 # Python cache files
@@ -28,13 +27,6 @@ build/
 # Logs
 logs/
 *.log
-
-# Local configuration
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
 
 # MongoDB local data
 data/db/
