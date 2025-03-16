@@ -1,13 +1,14 @@
 # database.py
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 from fastapi import Depends
+from dotenv import load_dotenv
+import os
 
-MONGO_URI = "***REMOVED***"
-DB_NAME = "bookstore"
+load_dotenv()
 
 # Create a database connection
-client = AsyncIOMotorClient(MONGO_URI)
-database = client[DB_NAME]
+client = AsyncIOMotorClient(os.getenv("MONGO_URI"))
+database = client[os.getenv("DB_NAME")]
 
 # Dependency to get the database
 async def get_database() -> AsyncIOMotorDatabase:

@@ -1,7 +1,7 @@
 # Virtual environments
 learn_mongo/
-venv/
-env/
+ecomm-env/
+tests/test-env
 .env/
 .venv/
 

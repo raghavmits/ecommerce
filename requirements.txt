@@ -1,0 +1,12 @@
+fastapi
+motor
+uvicorn
+pydantic
+email-validator
+pytest
+pytest-asyncio
+httpx
+pymongo
+mongomock
+mongomock-motor
+dotenv
