@@ -31,7 +31,7 @@ i. Clone the repository:
    cd ecommAPI
    ```
 
-ii. Revise the `.env` file in the project root with your MongoDB credentials:
+ii. Revise the `.env` file in the project root with your MongoDB credentials if you want to use a different database instead of the default one:
    ```
    MONGO_URI=mongodb+srv://<username>:<password>@<cluster-url>/?retryWrites=true&w=majority
    DB_NAME=bookstore
@@ -39,7 +39,7 @@ ii. Revise the `.env` file in the project root with your MongoDB credentials:
 
 iii. Build and start the services:
    ```bash
-   docker compose up --build
+   docker compose up
    ```
 
    This command will:
@@ -53,18 +53,9 @@ iv. The API will be available at `http://localhost:8000`
 
 FastAPI automatically generates comprehensive API documentation based on the code and docstrings.
 
-- **Swagger UI**: Interactive documentation available at [http://localhost:8000/docs](http://localhost:8000/docs)
-- **ReDoc**: Alternative documentation available at [http://localhost:8000/redoc](http://localhost:8000/redoc)
+- **Swagger UI**: [http://localhost:8000/docs](http://localhost:8000/docs)
+- **ReDoc**: [http://localhost:8000/redoc](http://localhost:8000/redoc)
 
-### Testing Endpoints
-
-You can test all API endpoints directly from the Swagger UI:
-
-1. Navigate to [http://localhost:8000/docs](http://localhost:8000/docs)
-2. Browse the available endpoints organized by tags (Users, Products, Carts)
-3. Click on an endpoint to expand it
-4. Click "Try it out" to input parameters and request body
-5. Execute the request and view the response
 
 ## 4. Key Assumptions & Design Decisions
 
@@ -147,13 +138,13 @@ class Cart(BaseModel):
 1. **Automatic Cart Creation**: A shopping cart is automatically created when a user is registered
 2. **Real-time Inventory Management**: Product stock is updated in real-time when items are added to or removed from carts
 3. **Product Availability**: Products are automatically marked as inactive when stock reaches zero
-4. **Checkout Process**: When a cart is checked out, a new empty cart is created for the user
+4. **Checkout Process**: When a cart is checked out, the cart is deleted, stock is updated and a new empty cart is created for the user. Therefore the user always has a cart assigned to them.
 
 ### Optimizations
 
 1. **Pagination**: All list endpoints support pagination for better performance with large datasets
 2. **Filtering and Sorting**: Product listing supports filtering by various attributes and custom sorting
-3. **Partial Updates**: PATCH endpoints for efficient partial updates of resources
+3. **Indexing**: The application automatically creates indexes for better search and retrieval performance
 4. **Asynchronous Operations**: All database operations are asynchronous for better performance
 
 ## 5. Running Unit Tests
@@ -165,8 +156,9 @@ The project includes comprehensive unit tests for all endpoints and business log
 To run the tests inside the Docker container:
 
 ```bash
-docker exec -it ecommapi-api-1 pytest -v
+docker exec -it <container_name> pytest -v
 ```
+Note: The container name is `ecommapi-api-1` if you are using the default configuration.
 
 ### Testing Framework
 
@@ -205,5 +197,5 @@ ecommAPI/
 
 ---
 
-This README provides a comprehensive guide to setting up, using, and understanding the e-commerce backend API. For any questions or issues, please open an issue in the repository.
+This README provides a comprehensive guide to setting up, using, and understanding the e-commerce backend API. For any questions or issues, please reach out to me at raghavmittal.wbs@gmail.com
 
