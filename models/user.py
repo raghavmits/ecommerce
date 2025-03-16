@@ -16,8 +16,10 @@ class UserBase(BaseModel):
 
 class User(UserBase):
     id: str = Field(alias="_id")
+    cart_id: Optional[str] = None  # Reference to the user's shopping cart
 
     class Config:
+        populate_by_name = True
         json_encoders = {ObjectId: str}
 
 
@@ -28,6 +30,10 @@ class UserCreate(UserBase):
 # Output model
 class UserResponse(UserBase):
     id: str
+    cart_id: Optional[str] = None
+    
+    class Config:
+        populate_by_name = True
 
 # Add this class after UserResponse
 class UserUpdate(BaseModel):

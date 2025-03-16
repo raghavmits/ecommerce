@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, Path, Query
 from bson import ObjectId
 from bson.errors import InvalidId
-from database import get_users_collection
+from database import get_users_collection, get_carts_collection
 from models.user import UserCreate, UserResponse, User, UserUpdate
 from models.common import PaginatedResponse
 from motor.motor_asyncio import AsyncIOMotorCollection
@@ -14,10 +14,47 @@ router = APIRouter(
 
 # Create a new user
 @router.post("/", response_model=UserResponse)
-async def create_user(user: UserCreate, users_collection: AsyncIOMotorCollection = Depends(get_users_collection)):
+async def create_user(
+    user: UserCreate, 
+    users_collection: AsyncIOMotorCollection = Depends(get_users_collection),
+    carts_collection: AsyncIOMotorCollection = Depends(get_carts_collection)
+):
+    # Check if email already exists
+    existing_user = await users_collection.find_one({"email": user.email})
+    if existing_user:
+        raise HTTPException(
+            status_code=400,
+            detail=f"User with email {user.email} already exists"
+        )
+    
+    # Create user
     user_data = user.model_dump()
     result = await users_collection.insert_one(user_data)
-    return UserResponse(id=str(result.inserted_id), **user_data)
+    user_id = str(result.inserted_id)
+    
+    # Create cart for user
+    cart_data = {
+        "user_id": user_id,
+        "items": []
+    }
+    cart_result = await carts_collection.insert_one(cart_data)
+    cart_id = str(cart_result.inserted_id)
+    
+    # Update user with cart_id
+    await users_collection.update_one(
+        {"_id": ObjectId(user_id)},
+        {"$set": {"cart_id": cart_id}}
+    )
+    
+    # Get updated user
+    updated_user = await users_collection.find_one({"_id": ObjectId(user_id)})
+    
+    return UserResponse(
+        id=user_id,
+        name=updated_user["name"],
+        email=updated_user["email"],
+        cart_id=updated_user.get("cart_id")
+    )
 
 # Get all users
 @router.get("/", response_model=PaginatedResponse[UserResponse])
@@ -34,7 +71,7 @@ async def get_users(
     
     # Convert to response models
     user_responses = [
-        UserResponse(id=str(user["_id"]), name=user["name"], email=user["email"]) 
+        UserResponse(id=str(user["_id"]), name=user["name"], email=user["email"], cart_id=user.get("cart_id")) 
         for user in users
     ]
     
@@ -68,8 +105,19 @@ async def get_user(user_id: str, users_collection: AsyncIOMotorCollection = Depe
         raise HTTPException(status_code=404, detail=f"User with ID {user_id} not found")
     
     try:
-        # Use User model to validate database document
-        user = User(_id=str(user_data["_id"]), name=user_data["name"], email=user_data["email"])
+        # Convert the MongoDB document to a dictionary
+        user_dict = {
+            "_id": str(user_data["_id"]),
+            "name": user_data["name"],
+            "email": user_data["email"],
+        }
+        
+        # Add cart_id if it exists in the document
+        if "cart_id" in user_data:
+            user_dict["cart_id"] = user_data["cart_id"]
+        
+        # Create the User object
+        user = User(**user_dict)
         
         # Convert to response model
         return UserResponse(**user.model_dump(by_alias=False))

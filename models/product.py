@@ -40,14 +40,6 @@ class Product(ProductBase):
 class ProductCreate(ProductBase):
     pass
 
-# # Input models - note that these don't include is_active
-# class ProductCreate(BaseModel):
-#     name: str = Field(..., min_length=2)
-#     description: str = Field(..., min_length=10)
-#     price: Decimal = Field(..., gt=0)
-#     stock_quantity: int = Field(..., ge=0)
-#     category: Optional[str] = None
-
 class ProductUpdate(BaseModel):
     name: Optional[str] = Field(None, min_length=2)
     description: Optional[str] = Field(None, min_length=10)

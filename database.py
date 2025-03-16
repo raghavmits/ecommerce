@@ -21,4 +21,7 @@ async def get_users_collection(database: AsyncIOMotorDatabase = Depends(get_data
 async def get_products_collection(database: AsyncIOMotorDatabase = Depends(get_database)):
     return database.get_collection("products")
 
+async def get_carts_collection(database: AsyncIOMotorDatabase = Depends(get_database)):
+    return database.get_collection("carts")
+
 
