@@ -25,19 +25,19 @@ The API is built using FastAPI for performance and MongoDB for flexible data sto
 
 ### Installation Steps
 
-1. Clone the repository:
+i. Clone the repository:
    ```bash
    git clone <repository-url>
    cd ecommAPI
    ```
 
-2. Revise the `.env` file in the project root with your MongoDB credentials:
+ii. Revise the `.env` file in the project root with your MongoDB credentials:
    ```
    MONGO_URI=mongodb+srv://<username>:<password>@<cluster-url>/?retryWrites=true&w=majority
    DB_NAME=bookstore
    ```
 
-3. Build and start the services:
+iii. Build and start the services:
    ```bash
    docker compose up --build
    ```
@@ -47,11 +47,7 @@ The API is built using FastAPI for performance and MongoDB for flexible data sto
    - Start the FastAPI application on port 8000
    - Connect to the MongoDB database specified in your `.env` file
 
-4. The API will be available at `http://localhost:8000`
-
-### Development Mode
-
-The default Docker Compose configuration includes volume mounting and hot-reloading, making it ideal for development. Any changes to your code will be reflected immediately without rebuilding the container.
+iv. The API will be available at `http://localhost:8000`
 
 ## 3. API Documentation
 
