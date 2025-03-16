@@ -115,6 +115,7 @@ async def get_products(
     
     # Text search
     if search:
+        # query["$text"] = {"$search": search}
         query["$or"] = [
             {"name": {"$regex": search, "$options": "i"}},
             {"description": {"$regex": search, "$options": "i"}}

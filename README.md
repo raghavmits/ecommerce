@@ -76,6 +76,26 @@ The application uses MongoDB with the following collections:
 - **products**: Contains product details, pricing, and inventory information
 - **carts**: Manages shopping carts with items and quantities
 
+### Database Indexes
+
+The application automatically creates the following indexes for better performance:
+
+- **Users Collection**:
+  - `email`: Unique index for fast user lookup and to ensure email uniqueness
+  - `cart_id`: For quick access to user's cart information
+
+- **Products Collection**:
+  - `name`: For quick product lookup by name
+  - `category`: For filtering products by category
+  - `price`: For sorting and filtering by price
+  - `is_active`: For filtering active/inactive products
+  - Compound index on `(category, price)`: For efficient category+price filtering
+  - Text index on `name` and `description`: For full-text search capabilities
+
+- **Carts Collection**:
+  - `user_id`: Unique index to ensure one cart per user
+  - `items.product_id`: For quickly finding carts containing specific products
+
 ### Data Models
 
 #### User Model
