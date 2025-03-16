@@ -1,5 +1,5 @@
 # Virtual environments
-learn_mongo/
+
 ecomm-env/
 tests/test-env
 .venv/
@@ -31,5 +31,5 @@ logs/
 # MongoDB local data
 data/db/
 
-# Jupyter Notebook
-.ipynb_checkpoints 
+# Environment variables
+.env
